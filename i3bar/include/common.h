@@ -29,6 +29,7 @@ typedef enum {
     /* First value to make it the default. */
     ALIGN_LEFT,
     ALIGN_CENTER,
+    ALIGN_ABS_CENTER,
     ALIGN_RIGHT
 } blockalign_t;
 

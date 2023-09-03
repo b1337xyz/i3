@@ -269,6 +269,8 @@ static int stdin_string(void *context, const unsigned char *val, size_t len) {
     if (strcasecmp(ctx->last_map_key, "align") == 0) {
         if (len == strlen("center") && !strncmp((const char *)val, "center", strlen("center"))) {
             ctx->block.align = ALIGN_CENTER;
+        } else if (len == strlen("absolute") && !strncmp((const char *)val, "absolute", strlen("absolute"))) {
+            ctx->block.align = ALIGN_ABS_CENTER;
         } else if (len == strlen("right") && !strncmp((const char *)val, "right", strlen("right"))) {
             ctx->block.align = ALIGN_RIGHT;
         } else {

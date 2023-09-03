@@ -188,6 +188,18 @@ static uint32_t predict_statusline_length(bool use_short_text) {
     uint32_t width = 0;
     struct status_block *block;
 
+    uint32_t blocks_width = 0;
+    TAILQ_FOREACH (block, &statusline_head, blocks) {
+        i3String *text = block->full_text;
+        if (use_short_text && block->short_text != NULL) {
+            text = block->short_text;
+        }
+        if (i3string_get_num_bytes(text) == 0)
+            continue;
+        blocks_width += predict_text_width(text);
+        blocks_width += logical_px(block->border_left + block->border_right);
+    }
+
     TAILQ_FOREACH (block, &statusline_head, blocks) {
         i3String *text = block->full_text;
         struct status_block_render_desc *render = &block->full_render;
@@ -219,6 +231,9 @@ static uint32_t predict_statusline_length(bool use_short_text) {
                 case ALIGN_CENTER:
                     render->x_offset = padding_width / 2;
                     render->x_append = padding_width / 2 + padding_width % 2;
+                    break;
+                case ALIGN_ABS_CENTER:
+                    render->x_append = (block->min_width/2) - blocks_width + (render->width/2);
                     break;
             }
         }
